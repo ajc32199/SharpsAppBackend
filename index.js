@@ -2,7 +2,7 @@ const express = require('express');
 const admin = require("firebase-admin");
 const cors = require("cors");
 
-const serviceAccount = require("./node_modules/sharpsreporter-firebase-adminsdk-fbsvc-23a1bef934.json");
+const serviceAccount = require("./duluth-sharps-report-5d29e791e93e.json");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
