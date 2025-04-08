@@ -2,10 +2,9 @@ const express = require('express');
 const admin = require("firebase-admin");
 const cors = require("cors");
 
-const serviceAccount = require("./node_modules/sharpsreporter-firebase-adminsdk-fbsvc-23a1bef934.json");
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.applicationDefault()
 })
 
 const db = admin.firestore();
