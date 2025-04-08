@@ -62,7 +62,6 @@ app.get('/reports', async (req, res) => {
         const snapshot = await db.collection('reports').get();
         const reports = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         res.json(reports);
-        console.log('reports fetched successfully');
     } catch(error) {
         console.error("Error fetching reports: ", error);
         res.status(500).json({ error: "Failed to fetch reports" });
