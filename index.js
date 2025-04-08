@@ -2,10 +2,13 @@ const express = require('express');
 const admin = require("firebase-admin");
 const cors = require("cors");
 
+<<<<<<< HEAD
 const serviceAccount = require("./duluth-sharps-report-5d29e791e93e.json");
+=======
+>>>>>>> integration
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.applicationDefault()
 })
 
 const db = admin.firestore();
