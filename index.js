@@ -21,6 +21,7 @@ app.use(express.json());
 let reports = []; //temp storage
 
 app.post('/reports', async (req, res) => {
+    console.log('Attempting to add report...');
     try{
         const { latitude, longitude, description } = req.body;
 
@@ -50,6 +51,7 @@ app.post('/reports', async (req, res) => {
 
         const docRef = await db.collection('reports').add(newReport);
         res.status(201).json({ id: docRef.id, ...newReport}); 
+        console.log('Report added successfully: ', newReport);
     } catch (error) {
         res.status(500).json({ error: "failed to add report" });
         console.error("Error adding report: ", error);
@@ -65,6 +67,7 @@ app.get('/reports', async (req, res) => {
         const snapshot = await db.collection('reports').get();
         const reports = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         res.json(reports);
+        console.log('Reports fetched successfully');
     } catch(error) {
         if(!res.headersSent) {
             res.status(500).json({ error: "failed to fetch reports" });
