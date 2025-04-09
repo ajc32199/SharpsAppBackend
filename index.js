@@ -60,14 +60,16 @@ app.post('/reports', async (req, res) => {
 
 app.get('/reports', async (req, res) => {
 
-    res.send('Fetching reports...');
+    console.log('Fetching reports...');
     try {
         const snapshot = await db.collection('reports').get();
         const reports = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         res.json(reports);
     } catch(error) {
+        if(!res.headersSent) {
+            res.status(500).json({ error: "failed to fetch reports" });
+        }
         console.error("Error fetching reports: ", error);
-        res.status(500).json({ error: "Failed to fetch reports" });
     }
 
 });
