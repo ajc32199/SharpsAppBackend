@@ -49,6 +49,8 @@ app.post('/reports', async (req, res) => {
         timestamp: new Date(),
         };
 
+        reports.push(newReport);
+
         const docRef = await db.collection('reports').add(newReport);
         res.status(201).json({ id: docRef.id, ...newReport}); 
         console.log('Report added successfully: ', newReport);
