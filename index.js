@@ -46,6 +46,7 @@ app.post('/reports', async (req, res) => {
         latitude,
         longitude,
         description,
+        image,
         timestamp: new Date(),
         };
 
