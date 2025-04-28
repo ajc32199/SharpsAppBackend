@@ -46,7 +46,7 @@ app.post('/reports', async (req, res) => {
         latitude,
         longitude,
         description,
-        image,
+        image: image || null,
         reportStatus: reportStatus || 'pending',
         timestamp: new Date(),
         };
