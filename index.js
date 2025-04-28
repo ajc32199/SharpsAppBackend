@@ -23,7 +23,7 @@ let reports = []; //temp storage
 app.post('/reports', async (req, res) => {
     console.log('Attempting to add report...');
     try{
-        const { latitude, longitude, description } = req.body;
+        const { latitude, longitude, description, image, reportStatus } = req.body;
 
         if (!latitude || !longitude || !description) {
             console.log('All fields are required');
@@ -47,6 +47,7 @@ app.post('/reports', async (req, res) => {
         longitude,
         description,
         image,
+        reportStatus: reportStatus || 'pending',
         timestamp: new Date(),
         };
 
