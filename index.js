@@ -87,7 +87,6 @@ app.post('/reports', async (req, res) => {
 
 
     const newReport = {
-      id:            reports.length + 1,
       latitude,
       longitude,
       description,
