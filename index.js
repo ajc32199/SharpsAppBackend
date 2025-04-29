@@ -36,41 +36,32 @@ const port = process.env.PORT || 3000;
 
 let reports = []; // in-memory cache
 app.patch('/reports/:id', async (req, res) => {
-    const { id } = req.params;
-    const { photoUrl, status } = req.body; 
-    
-    console.log(`Updating report ${id}...`);
-  
-    try {
-      const reportRef = db.collection('reports').doc(id);
-  
-      const reportSnapshot = await reportRef.get();
-      if (!reportSnapshot.exists) {
-        if (!res.headersSent) {
-          res.status(404).json({ error: 'Report not found' });
-        }
-        console.error(`Report ${id} not found`);
-        return;
-      }
-  
-      await reportRef.update({
-        ...(photoUrl && { photoUrl }),
-        ...(status && { status })
-      });
-  
-      const updatedSnapshot = await reportRef.get();
-      const updatedReport = { id: updatedSnapshot.id, ...updatedSnapshot.data() };
-  
-      res.json(updatedReport);
-      console.log(`Report ${id} updated successfully`);
-    } catch (error) {
-      if (!res.headersSent) {
-        res.status(500).json({ error: 'Failed to update report' });
-      }
-      console.error(`Error updating report ${id}:`, error);
-    }
-  });
-  
+  const { image, reportStatus } = req.body;
+  const updates = {};
+
+  if (image         !== undefined) updates.image        = image;
+  if (reportStatus  !== undefined) updates.reportStatus = reportStatus;
+
+  if (Object.keys(updates).length === 0) {
+    return res
+      .status(400)
+      .json({ error: 'No valid fields provided to update' });
+  }
+
+  try {
+    const reportRef = db.collection('reports').doc(req.params.id);
+
+    // ... (you can still check existence if you like)
+
+    await reportRef.update(updates);
+
+    const updated = await reportRef.get();
+    res.json({ id: updated.id, ...updated.data() });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update report' });
+  }
+});
 
 app.post('/reports', async (req, res) => {
   console.log('Attempting to add report…');
