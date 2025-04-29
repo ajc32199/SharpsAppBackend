@@ -35,6 +35,42 @@ app.use(express.json());
 const port = process.env.PORT || 3000;
 
 let reports = []; // in-memory cache
+app.patch('/reports/:id', async (req, res) => {
+    const { id } = req.params;
+    const { photoUrl, status } = req.body; 
+    
+    console.log(`Updating report ${id}...`);
+  
+    try {
+      const reportRef = db.collection('reports').doc(id);
+  
+      const reportSnapshot = await reportRef.get();
+      if (!reportSnapshot.exists) {
+        if (!res.headersSent) {
+          res.status(404).json({ error: 'Report not found' });
+        }
+        console.error(`Report ${id} not found`);
+        return;
+      }
+  
+      await reportRef.update({
+        ...(photoUrl && { photoUrl }),
+        ...(status && { status })
+      });
+  
+      const updatedSnapshot = await reportRef.get();
+      const updatedReport = { id: updatedSnapshot.id, ...updatedSnapshot.data() };
+  
+      res.json(updatedReport);
+      console.log(`Report ${id} updated successfully`);
+    } catch (error) {
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Failed to update report' });
+      }
+      console.error(`Error updating report ${id}:`, error);
+    }
+  });
+  
 
 app.post('/reports', async (req, res) => {
   console.log('Attempting to add report…');
