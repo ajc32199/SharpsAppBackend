@@ -6,7 +6,7 @@ const cors    = require('cors');
 
 // 1) Guard against missing env var
 if (!process.env.FIREBASE_CONFIG_BASE64) {
-  console.error('❌  Missing FIREBASE_CONFIG_BASE64 environment variable!');
+  console.error('Missing FIREBASE_CONFIG_BASE64 environment variable!');
   process.exit(1);
 }
 
@@ -18,7 +18,7 @@ try {
     .toString('utf-8');
   serviceAccount = JSON.parse(raw);
 } catch (err) {
-  console.error('❌  Invalid FIREBASE_CONFIG_BASE64:', err.message);
+  console.error('Invalid FIREBASE_CONFIG_BASE64:', err.message);
   process.exit(1);
 }
 
@@ -90,9 +90,9 @@ app.post('/reports', async (req, res) => {
       latitude,
       longitude,
       description,
-      image:         image || null,
-      reportStatus:  reportStatus || 'pending',
-      timestamp:     new Date(),
+      image: image || null,
+      reportStatus:  reportStatus || 'Pending',
+      timestamp: new Date(),
     };
 
     reports.push(newReport);
